@@ -2,4 +2,9 @@
     <string name="app_name">e-commerce-app</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string-array name="rols">
+        <item>--Select Rol--</item>
+        <item>S</item>
+        <item></item>
+    </string-array>
 </resources>

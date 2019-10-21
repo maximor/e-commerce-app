@@ -67,6 +67,7 @@
                     android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:hint="Email" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,6 +79,7 @@
                     android:id="@+id/txtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="Contraseña" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,9 +88,10 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtConfirmarContrasena"
+                    android:id="@+id/txtConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textPassword"
                     android:hint="Confirmar Contraseña" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,11 +99,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtTipoUsuario"
+                <Spinner
+                    android:id="@+id/cmbRol"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="TIpo Usuario" />
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="0"
+                    android:gravity="center_horizontal" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -108,22 +114,28 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtContacto"
+                    android:id="@+id/txtDateBirth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="N. Contacto" />
+                    android:layout_marginBottom="15dp"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="date"
+                    android:hint="Fecha Nacimiento"
+                    android:maxLines="1" />
+
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/txtContact"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:inputType="phone"
+                android:hint="N. Contacto" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtFechaNacimiento"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha Nacimiento" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="match_parent"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

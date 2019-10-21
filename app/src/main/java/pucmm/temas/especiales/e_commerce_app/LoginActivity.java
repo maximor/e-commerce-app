@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void auth(){
         if(this.user.getText().toString().equals("admin") && this.password.getText().toString().equals("admin")){
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
             startActivity(intent);
         }else{
 //
