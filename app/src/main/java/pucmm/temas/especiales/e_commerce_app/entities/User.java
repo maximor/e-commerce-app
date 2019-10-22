@@ -1,46 +1,34 @@
 package pucmm.temas.especiales.e_commerce_app.entities;
 
-import java.util.Date;
-
 public class User {
-    private String uuid;
-    private String token;
+    private long id;
     private String name;
     private String user;
-    private String password;
     private String email;
-    private String rol;
+    private String password;
     private String contact;
-    private String dateBirth;
     private String photo;
+    private boolean isProvider;
+    private long token;
 
     public User() { }
 
-    public User(String name, String user, String password, String email, String rol, String contact, String dateBirth) {
+    public User(String name, String user, String email, String password, String contact, String photo, boolean isProvider) {
         this.name = name;
         this.user = user;
-        this.password = password;
         this.email = email;
-        this.rol = rol;
+        this.password = password;
         this.contact = contact;
-        this.dateBirth = dateBirth;
         this.photo = photo;
+        this.isProvider = isProvider;
     }
 
-    public String getUuid() {
-        return uuid;
+    public long getId() {
+        return id;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -59,14 +47,6 @@ public class User {
         this.user = user;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -75,12 +55,12 @@ public class User {
         this.email = email;
     }
 
-    public String getRol() {
-        return rol;
+    public String getPassword() {
+        return password;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getContact() {
@@ -91,19 +71,27 @@ public class User {
         this.contact = contact;
     }
 
-    public String getDateBirth() {
-        return dateBirth;
-    }
-
-    public void setDateBirth(String dateBirth) {
-        this.dateBirth = dateBirth;
-    }
-
     public String getPhoto() {
         return photo;
     }
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public boolean isProvider() {
+        return isProvider;
+    }
+
+    public void setProvider(boolean provider) {
+        isProvider = provider;
+    }
+
+    public long getToken() {
+        return token;
+    }
+
+    public void setToken(long token) {
+        this.token = token;
     }
 }
