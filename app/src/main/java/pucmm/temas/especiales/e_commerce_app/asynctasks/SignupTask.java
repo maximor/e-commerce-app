@@ -16,7 +16,7 @@ import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.HttpConnection;
 
 public class SignupTask extends AsyncTask<Void, Void, Result> {
-    private static final String LOGIN_URL = "http://ec2-3-86-40-181.compute-1.amazonaws.com:9876/users";
+    private static final String LOGIN_URL = "http://ec2-3-86-40-181.compute-1.amazonaws.com:6789/register";
     private User user;
     private Response.Listener listener;
     private Response.ErrorListener errorListener;
@@ -49,11 +49,12 @@ public class SignupTask extends AsyncTask<Void, Void, Result> {
     protected void onPostExecute(Result result) {
         if(result.getResult() != null){
             try {
+                Log.i("INFORMATION", result.getResult().toString());
                 JSONObject jsonObject = new JSONObject(result.getResult().toString());
-                if(jsonObject.getString("RESPONSE").equals("SUCCESS")){
+                if(jsonObject.getString("error").equals("false")){
                     listener.onResponse(jsonObject);
                 }else{
-                    errorListener.onErrorResponse(new Exception("The information provided is not correct value["+jsonObject.toString()+"]"));
+                    errorListener.onErrorResponse(new Exception(jsonObject.getString("message")));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -63,6 +64,6 @@ public class SignupTask extends AsyncTask<Void, Void, Result> {
 
     @Override
     protected void onCancelled() {
-        super.onCancelled();
+        errorListener.onErrorResponse(new Exception("Task cancelled"));
     }
 }

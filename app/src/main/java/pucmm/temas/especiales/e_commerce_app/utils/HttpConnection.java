@@ -29,7 +29,7 @@ public class HttpConnection {
         this.method = method;
         this.requests = new HashMap<>();
         this.requests.put("Content-Type", "application/json");
-        this.requests.put("TOKEN", "9elv4YuVmrjJo4_WViokmyhhtlWgE6AMo5br45om");
+        this.requests.put("TOKEN", "bSLKWUH_YIlnpVALrY14dEMavpx0n-XXVfT5Yq2g");
 
         if(requests != null){
             this.requests.putAll(requests);
@@ -58,7 +58,7 @@ public class HttpConnection {
     public String get() throws IOException{
         final BufferedReader reader;
 
-        if(responseCode == HttpURLConnection.HTTP_OK){
+        if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         }else{
             reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
@@ -73,10 +73,10 @@ public class HttpConnection {
     public String post(String json) throws IOException{
         final BufferedReader reader;
         connection.getOutputStream().write(json.getBytes("utf-8"));
-        if(HttpURLConnection.HTTP_OK == 200){
+        if(connection.getResponseCode() == HttpURLConnection.HTTP_CREATED){
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         }else{
-            reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+            reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
         }
         try{
             return getReader(reader);
@@ -102,9 +102,5 @@ public class HttpConnection {
             connection.disconnect();
             reader.close();
         }
-    }
-
-    public int getResponseCode(){
-        return responseCode;
     }
 }

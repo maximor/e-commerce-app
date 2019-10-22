@@ -2,9 +2,20 @@
     <string name="app_name">e-commerce-app</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string-array name="rols">
-        <item>--Select Rol--</item>
-        <item>S</item>
-        <item></item>
-    </string-array>
+    
+    
+<!--Strings related to the signup-->
+    <string name="prompt_name">Enter Name</string>
+    <string name="prompt_user">Enter User Name</string>
+    <string name="prompt_email">Enter Email</string>
+    <string name="prompt_password">Enter password</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="promp_contact_number">Contact Number</string>
+
+    <string name="forgot">Forgot My Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+    <string name="error_field_password">This password is incorrect</string>
+    <string name="error_empty_field">This field can not be blank</string>
 </resources>
