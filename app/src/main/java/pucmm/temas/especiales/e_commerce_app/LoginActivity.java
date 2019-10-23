@@ -18,6 +18,7 @@ import pucmm.temas.especiales.e_commerce_app.asynctasks.LoginTask;
 import pucmm.temas.especiales.e_commerce_app.asynctasks.Response;
 import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
+import pucmm.temas.especiales.e_commerce_app.utils.UserSession;
 
 public class LoginActivity extends AppCompatActivity {
     //TODO: LOADING BAR WHEN PRESS LOGIN BUTTON.
@@ -27,6 +28,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button login;
     private TextView signup;
     private TextView forgotPassword;
+
+    private UserSession session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         this.login = (Button) findViewById(R.id.btnLogin);
         this.signup = (TextView) findViewById(R.id.viewSignup);
         this.forgotPassword = (TextView) findViewById(R.id.viewForgot);
+
+        session = new UserSession(getApplicationContext());
 
         //access event for login authentication
         this.login.setOnClickListener(new View.OnClickListener(){
@@ -93,9 +98,17 @@ public class LoginActivity extends AppCompatActivity {
                             Gson gson = new Gson();
                             User userInformation = gson.fromJson(response.toString(), User.class);
 
-                            //TODO: HERE ADD THE SESSION MANAGEMENT BEFORE CHANGING TO THE NEXT ACTIVITY.
+                            //store data in the shred preference to have a session
+                            session.createLoginSession(userInformation.getId(),
+                                    userInformation.getEmail(),
+                                    userInformation.getUser(),
+                                    userInformation.getName(),
+                                    userInformation.getToken());
+
+
                             Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
                             startActivity(intent);
+                            finish();
                         }
                     }, new Response.ErrorListener() {
                 @Override
