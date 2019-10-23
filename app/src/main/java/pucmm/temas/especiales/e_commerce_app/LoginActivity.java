@@ -4,14 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import pucmm.temas.especiales.e_commerce_app.asynctasks.LoginTask;
+import pucmm.temas.especiales.e_commerce_app.asynctasks.Response;
+import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
 
 public class LoginActivity extends AppCompatActivity {
+    //TODO: LOADING BAR WHEN PRESS LOGIN BUTTON.
     private TextView message;
     private EditText user;
     private EditText password;
@@ -63,23 +72,46 @@ public class LoginActivity extends AppCompatActivity {
         if(FieldValidator.isEmpty(this.user)){
             this.user.setError("This field can not be blank");
             validator = false;
+        }else if(!FieldValidator.isEmailValid(this.user, this.user.getText().toString())){
+            validator = false;
         }
 
         if(FieldValidator.isEmpty(this.password)){
             this.password.setError("This field can not be blank");
             validator = false;
+        }else if(!FieldValidator.isPasswordValid(this.password, this.password.getText().toString())){
+            validator = false;
         }
 
         if(validator){
+            LoginTask loginTask = new LoginTask(this.user.getText().toString(),
+                    this.password.getText().toString(),
+                    new Response.Listener() {
+                        @Override
+                        public void onResponse(Object response) {
+                            Log.i("JSON: ", response.toString());
+                            Gson gson = new Gson();
+                            User userInformation = gson.fromJson(response.toString(), User.class);
 
-            if(this.user.getText().toString().equals("admin") && this.password.getText().toString().equals("admin")){
-                Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
-                startActivity(intent);
-            }else{
-
-            }
+                            //TODO: HERE ADD THE SESSION MANAGEMENT BEFORE CHANGING TO THE NEXT ACTIVITY.
+                            Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
+                            startActivity(intent);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(Exception error) {
+                    //send error message with Toast Class
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Incorrect email or password",
+                            Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER|Gravity.LEFT,0,0);
+                    toast.show();
+                    user.setError("Verify email ["+user.getText().toString()+"], may be incorrect");
+                    password.setError("Verify password, may be incorrect");
+                }
+            });
+            loginTask.execute();
         }
-
     }
 
     private void showSignup(){

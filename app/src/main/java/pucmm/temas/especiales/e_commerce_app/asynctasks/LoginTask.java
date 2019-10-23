@@ -3,13 +3,15 @@ package pucmm.temas.especiales.e_commerce_app.asynctasks;
 import android.annotation.TargetApi;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.util.Log;
-import org.json.JSONArray;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
+import pucmm.temas.especiales.e_commerce_app.entities.Login;
 import pucmm.temas.especiales.e_commerce_app.utils.HttpConnection;
 
 @TargetApi(Build.VERSION_CODES.CUPCAKE)
@@ -31,42 +33,32 @@ public class LoginTask extends AsyncTask<Void, Void, Result> {
 
     @Override
     protected Result doInBackground(Void... params) {
-        final HttpConnection connection = new HttpConnection(LOGIN_URL);
+        final HttpConnection connection = new HttpConnection(LOGIN_URL, "POST");
         try{
-            return new Result(connection.get());
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+
+            return new Result(connection.post(gson.toJson(new Login(this.email, this.password)).toString()));
         }catch (IOException e){
             return new Result<>(new Exception(e));
         }
     }
 
     @Override
-    protected void onPostExecute(final Result success) {
-        if (success.getResult() != null) {
+    protected void onPostExecute(final Result result) {
+        if (result.getResult() != null) {
             try {
-                final JSONArray jsonArray = new JSONArray(String.valueOf(success.getResult()));
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                    // Account exists, return true if the password matches.
-                    if (!jsonObject.getString("user").equals(email) && !jsonObject.getString("email").equals(email)) {
-                        errorListener.onErrorResponse(new Exception("No account found for email [" + email + "]"));
-                    } else if (!jsonObject.getString("password").equals(password)) {
-                        errorListener.onErrorResponse(new Exception("No password found for email [" + email + "]"));
-                    } else {
-                        listener.onResponse(jsonObject.put("RESPONSE", "SUCCESS"));
-                    }
+                JSONObject jsonObject = new JSONObject(result.getResult().toString());
+                if(jsonObject.getString("error").equals("false")){
+                    listener.onResponse(jsonObject);
+                }else{
+                    errorListener.onErrorResponse(new Exception(jsonObject.getString("message")));
                 }
             } catch (JSONException e) {
-                try {
-                    final JSONArray jsonArray = new JSONArray(String.valueOf(success.getResult()));
-                    final JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-                    errorListener.onErrorResponse(new Exception(jsonObject.getString("MESSAGE")));
-
-                } catch (JSONException ex) {
-                    errorListener.onErrorResponse(e);
-                }
+                e.printStackTrace();
             }
         } else {
-            errorListener.onErrorResponse(success.getError());
+            errorListener.onErrorResponse(result.getError());
         }
     }
 
