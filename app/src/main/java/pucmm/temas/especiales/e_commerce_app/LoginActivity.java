@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
+
 public class LoginActivity extends AppCompatActivity {
     private TextView message;
     private EditText user;
@@ -21,7 +23,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        updateUI();
+    }
 
+    private void updateUI() {
         this.user = (EditText) findViewById(R.id.txtUser);
         this.password = (EditText) findViewById(R.id.txtPassword);
         this.login = (Button) findViewById(R.id.btnLogin);
@@ -54,12 +59,27 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void auth(){
-        if(this.user.getText().toString().equals("admin") && this.password.getText().toString().equals("admin")){
-            Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
-            startActivity(intent);
-        }else{
-//
+        boolean validator = true;
+        if(FieldValidator.isEmpty(this.user)){
+            this.user.setError("This field can not be blank");
+            validator = false;
         }
+
+        if(FieldValidator.isEmpty(this.password)){
+            this.password.setError("This field can not be blank");
+            validator = false;
+        }
+
+        if(validator){
+
+            if(this.user.getText().toString().equals("admin") && this.password.getText().toString().equals("admin")){
+                Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
+                startActivity(intent);
+            }else{
+
+            }
+        }
+
     }
 
     private void showSignup(){

@@ -4,7 +4,7 @@
     <string name="close">Close</string>
     
     
-<!--Strings related to the signup-->
+<!--Strings related to the signup and login-->
     <string name="prompt_name">Enter Name</string>
     <string name="prompt_user">Enter User Name</string>
     <string name="prompt_email">Enter Email</string>
@@ -18,4 +18,9 @@
 
     <string name="error_field_password">This password is incorrect</string>
     <string name="error_empty_field">This field can not be blank</string>
+
+<!--    Strings related to the login-->
+    <string name="signup">Singup</string>
+
 </resources>
+
