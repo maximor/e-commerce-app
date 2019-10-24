@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -18,6 +19,7 @@ import pucmm.temas.especiales.e_commerce_app.asynctasks.LoginTask;
 import pucmm.temas.especiales.e_commerce_app.asynctasks.Response;
 import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
+import pucmm.temas.especiales.e_commerce_app.utils.Networking;
 import pucmm.temas.especiales.e_commerce_app.utils.UserSession;
 
 public class LoginActivity extends AppCompatActivity {
@@ -89,41 +91,46 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if(validator){
-            LoginTask loginTask = new LoginTask(this.user.getText().toString(),
-                    this.password.getText().toString(),
-                    new Response.Listener() {
-                        @Override
-                        public void onResponse(Object response) {
-                            Log.i("JSON: ", response.toString());
-                            Gson gson = new Gson();
-                            User userInformation = gson.fromJson(response.toString(), User.class);
+            //verify if the internet is available before request the login
+            if(Networking.getConnectionStatus(this)){
+                LoginTask loginTask = new LoginTask(this.user.getText().toString(),
+                        this.password.getText().toString(),
+                        new Response.Listener() {
+                            @Override
+                            public void onResponse(Object response) {
+                                Log.i("JSON: ", response.toString());
+                                Gson gson = new Gson();
+                                User userInformation = gson.fromJson(response.toString(), User.class);
 
-                            //store data in the shred preference to have a session
-                            session.createLoginSession(userInformation.getId(),
-                                    userInformation.getEmail(),
-                                    userInformation.getUser(),
-                                    userInformation.getName(),
-                                    userInformation.getToken());
+                                //store data in the shred preference to have a session
+                                session.createLoginSession(userInformation.getId(),
+                                        userInformation.getEmail(),
+                                        userInformation.getUser(),
+                                        userInformation.getName(),
+                                        userInformation.getToken());
 
 
-                            Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(Exception error) {
-                    //send error message with Toast Class
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Incorrect email or password",
-                            Toast.LENGTH_LONG);
-                    toast.setGravity(Gravity.CENTER|Gravity.LEFT,0,0);
-                    toast.show();
-                    user.setError("Verify email ["+user.getText().toString()+"], may be incorrect");
-                    password.setError("Verify password, may be incorrect");
-                }
-            });
-            loginTask.execute();
+                                Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(Exception error) {
+                        //send error message with Toast Class
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Incorrect email or password",
+                                Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER|Gravity.LEFT,0,0);
+                        toast.show();
+                        user.setError("Verify email ["+user.getText().toString()+"], may be incorrect");
+                        password.setError("Verify password, may be incorrect");
+                    }
+                });
+                loginTask.execute();
+            }else{
+                Toast.makeText(this,"No Internet Connection", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
