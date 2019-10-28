@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -98,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
                         new Response.Listener() {
                             @Override
                             public void onResponse(Object response) {
-                                Log.i("JSON: ", response.toString());
                                 Gson gson = new Gson();
                                 User userInformation = gson.fromJson(response.toString(), User.class);
 
@@ -109,9 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                                         userInformation.getName(),
                                         userInformation.getToken());
 
-
-                                Intent intent = new Intent(LoginActivity.this, LoginSplash.class);
-                                startActivity(intent);
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
                                 finish();
                             }
                         }, new Response.ErrorListener() {

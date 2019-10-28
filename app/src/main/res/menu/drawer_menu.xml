@@ -12,7 +12,7 @@
         <item android:id="@+id/menu_products"
             android:icon="@drawable/ic_products"
             android:title="@string/products"/>
-        <item android:id="@+id/menu_seguimiento_despacho"
+        <item android:id="@+id/menu_tracking"
             android:icon="@drawable/ic_seguimiento_despacho"
             android:title="@string/tracking"/>
         <item android:id="@+id/menu_profile"
