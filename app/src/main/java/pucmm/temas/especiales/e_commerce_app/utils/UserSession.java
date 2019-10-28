@@ -49,7 +49,7 @@ public class UserSession {
         }
     }
 
-    private boolean isLoggedIn() {
+    public boolean isLoggedIn() {
         return sharedPreferences.getBoolean("isLoggedIn", false);
     }
 
