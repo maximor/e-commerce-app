@@ -2,20 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <group android:checkableBehavior="single">
         <item android:id="@+id/menu_home"
             android:icon="@drawable/ic_home"
-            android:title="Inicio"/>
+            android:title="@string/home"/>
         <item android:id="@+id/menu_category"
             android:icon="@drawable/ic_categories"
-            android:title="Categoría"/>
+            android:title="@string/category"/>
         <item android:id="@+id/menu_products"
             android:icon="@drawable/ic_products"
-            android:title="Productos"/>
+            android:title="@string/products"/>
         <item android:id="@+id/menu_seguimiento_despacho"
             android:icon="@drawable/ic_seguimiento_despacho"
-            android:title="Seguimiento despacho"/>
+            android:title="@string/tracking"/>
+        <item android:id="@+id/menu_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="@string/profile"/>
     </group>
 
 
@@ -23,17 +25,10 @@
         <menu>
             <item android:id="@+id/menu_help"
                 android:icon="@drawable/ic_help"
-                android:title="Ayuda"/>
-            <item android:id="@+id/menu_profile"
-                android:icon="@drawable/ic_profile"
-                android:title="Perfil"/>
+                android:title="@string/help"/>
             <item android:id="@+id/menu_signout"
                 android:icon="@drawable/ic_signout"
-                android:title="Cerrar sesión"/>
+                android:title="@string/signout"/>
         </menu>
     </item>
-
-
-
-
 </menu>
