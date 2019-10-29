@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private UserSession session;
 
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         this.login = (Button) findViewById(R.id.btnLogin);
         this.signup = (TextView) findViewById(R.id.viewSignup);
         this.forgotPassword = (TextView) findViewById(R.id.viewForgot);
+        this.progressBar = (ProgressBar) findViewById(R.id.progress_bar_login);
 
         session = new UserSession(getApplicationContext());
 
@@ -73,18 +77,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void auth(){
+        progressBarVisibleLoginInvisible();
         boolean validator = true;
         if(FieldValidator.isEmpty(this.user)){
+            progressbarInvisibleLoginButtonVisible();
             this.user.setError("This field can not be blank");
             validator = false;
         }else if(!FieldValidator.isEmailValid(this.user, this.user.getText().toString())){
+            progressbarInvisibleLoginButtonVisible();
             validator = false;
         }
 
         if(FieldValidator.isEmpty(this.password)){
+            progressbarInvisibleLoginButtonVisible();
             this.password.setError("This field can not be blank");
             validator = false;
         }else if(!FieldValidator.isPasswordValid(this.password, this.password.getText().toString())){
+            progressbarInvisibleLoginButtonVisible();
             validator = false;
         }
 
@@ -127,6 +136,16 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this,"No Internet Connection", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void progressBarVisibleLoginInvisible() {
+        this.progressBar.setVisibility(View.VISIBLE);
+        this.login.setVisibility(View.GONE);
+    }
+
+    private void progressbarInvisibleLoginButtonVisible() {
+        this.progressBar.setVisibility(View.GONE);
+        this.login.setVisibility(View.VISIBLE);
     }
 
     private void showSignup(){
