@@ -1,13 +1,13 @@
 package pucmm.temas.especiales.e_commerce_app.entities;
 
-public class ErroMessage {
+public class ErrorMessage {
     private boolean success;
     private boolean error;
     private String message;
 
-    public ErroMessage() { }
+    public ErrorMessage() { }
 
-    public ErroMessage(boolean success, boolean error, String message) {
+    public ErrorMessage(boolean success, boolean error, String message) {
         this.success = success;
         this.error = error;
         this.message = message;

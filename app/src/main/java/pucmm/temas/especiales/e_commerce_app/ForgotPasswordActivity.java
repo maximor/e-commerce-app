@@ -1,22 +1,60 @@
 package pucmm.temas.especiales.e_commerce_app;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+
+import pucmm.temas.especiales.e_commerce_app.asynctasks.ForgotTask;
+import pucmm.temas.especiales.e_commerce_app.asynctasks.Response;
+import pucmm.temas.especiales.e_commerce_app.dialog.MessageDialog;
+import pucmm.temas.especiales.e_commerce_app.entities.ErrorMessage;
+import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
+import pucmm.temas.especiales.e_commerce_app.utils.Networking;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     private TextView back;
+    private Button send;
+    private EditText email;
+    private ProgressBar progressBar;
+    private Context applicationContext;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
+        applicationContext = this;
+        bundle = savedInstanceState;
+        updateUI();
+    }
 
+    private void updateUI() {
+        this.email = (EditText) findViewById(R.id.txtForgotPassword);
+        this.send = (Button) findViewById(R.id.btnSend);
         this.back = (TextView) findViewById(R.id.btnBack);
+        this.progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
+        //Send request to get the password
+        this.send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendForgotEmail();
+            }
+        });
 
         //Go back to login
         this.back.setOnClickListener((new View.OnClickListener(){
@@ -25,6 +63,50 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 goBack();
             }
         }));
+    }
+
+    private void sendForgotEmail(){
+        progressBar.setVisibility(View.VISIBLE);
+        this.send.setVisibility(View.GONE);
+        if(FieldValidator.isEmpty(this.email)){
+            this.email.setError("This field can not be blank");
+            progressBar.setVisibility(View.GONE);
+            send.setVisibility(View.VISIBLE);
+        }else if(FieldValidator.isEmailValid(this.email, this.email.getText().toString())){
+            //verify if the internet is available before request the forgotpassword
+            if(Networking.getConnectionStatus(this)){
+                ForgotTask forgotTask = new ForgotTask(this.email.getText().toString(),
+                        new Response.Listener() {
+                            @Override
+                            public void onResponse(Object response) {
+                                Gson gson = new Gson();
+                                ErrorMessage result = gson.fromJson(response.toString(), ErrorMessage.class);
+
+                                //Call a custum dialog message to provide the forgot password
+                                MessageDialog.getInstance(applicationContext).
+                                        informationDialog(result.getMessage());
+
+                                progressBar.setVisibility(View.GONE);
+                                send.setVisibility(View.VISIBLE);
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(Exception error) {
+                        Log.i("Error: ", error.getMessage());
+                        progressBar.setVisibility(View.GONE);
+                        send.setVisibility(View.VISIBLE);
+                    }
+                });
+                forgotTask.execute();
+            }else{
+                Toast.makeText(this,"No Internet Connection", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
+                send.setVisibility(View.VISIBLE);
+            }
+        }else{
+            progressBar.setVisibility(View.GONE);
+            send.setVisibility(View.VISIBLE);
+        }
     }
 
     private void goBack(){
