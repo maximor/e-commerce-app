@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,9 +26,6 @@ import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
 public class SignUpActivity extends AppCompatActivity  {
     //TODO: VERIFY WHAT IS IS PROVIDER PARAMETER.
     //TODO: ADD A LOADING BAR WHEN ANY CREATE BUTTON IS PRESSED.
-    //TODO: LAUNCH ALERT MESSAGE WHEN A USER IS CREATED SUCCESSFULLY.
-    //TODO: LAUNCH ALERT MESSAGE WHEN THERE'S AN ERROR.
-    //TODO: VERIFY THE API RESPONSE TO CREATE AN IDEAL ALERT STRUCTURE.
     private EditText name;
     private EditText user;
     private EditText email;
@@ -38,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity  {
     private TextView login;
     private Button signup;
     private Context applicationContext;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +58,7 @@ public class SignUpActivity extends AppCompatActivity  {
         this.forgotPassword = (TextView) findViewById(R.id.viewForgot);
         this.login = (TextView) findViewById(R.id.viewLogin);
         this.signup = (Button) findViewById(R.id.btnSignup);
+        this.progressBar = (ProgressBar) findViewById(R.id.progress_bar_signup);
 
 
         //Access event for Forgot password
@@ -101,29 +101,38 @@ public class SignUpActivity extends AppCompatActivity  {
         if(FieldValidator.isEmpty(this.name)){
             this.name.setError("This field can not be blank");
             validator = false;
+            progressBarInvisibleSignupVisible();
         }
         if(FieldValidator.isEmpty(this.user)){
             this.user.setError("This field can not be blank");
             validator = false;
+            progressBarInvisibleSignupVisible();
         }
         if(FieldValidator.isEmpty(this.password)){
             this.password.setError("This field can not be blank");
             validator = false;
+            progressBarInvisibleSignupVisible();
         }
         if(FieldValidator.isEmpty(this.confirmPassword)){
             this.confirmPassword.setError("This field can not be blank");
             validator = false;
+            progressBarInvisibleSignupVisible();
         }
         if(FieldValidator.isEmpty(this.email)){
             this.email.setError("This field can not be blank");
             validator = false;
+            progressBarInvisibleSignupVisible();
+        }else if(FieldValidator.isEmailValid(this.email, this.email.getText().toString())){
+            progressBarInvisibleSignupVisible();
         }
 
         if(validator){
+            progressBarVisibleSignupInvisible();
             //verifies if the passwords provided are igual, if it's the case then do the post
             if(!this.password.getText().toString().equals(this.confirmPassword.getText().toString())){
                 this.password.setError("password doesn't match");
                 this.confirmPassword.setError("password doesn't match");
+                progressBarInvisibleSignupVisible();
             }else{
                 User user = new User(this.name.getText().toString(),
                         this.user.getText().toString(),
@@ -134,6 +143,7 @@ public class SignUpActivity extends AppCompatActivity  {
                 SignupTask signupTask = new SignupTask(user, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        progressBarInvisibleSignupVisible();
                         cleanTextFields();
                         Toast toast = Toast.makeText(applicationContext,"User was created Successfuly", Toast.LENGTH_LONG);
                         toast.setGravity(Gravity.TOP,0,0);
@@ -143,10 +153,13 @@ public class SignUpActivity extends AppCompatActivity  {
                     @Override
                     public void onErrorResponse(Exception error) {
                         MessageDialog.getInstance(applicationContext).errorDialog("["+email.getText().toString()+"] "+ error.getMessage());
+                        progressBarInvisibleSignupVisible();
                     }
                 });
                 signupTask.execute();
             }
+        }else{
+            progressBarInvisibleSignupVisible();
         }
     }
 
@@ -157,6 +170,16 @@ public class SignUpActivity extends AppCompatActivity  {
         this.confirmPassword.setText(null);
         this.email.setText(null);
         this.contact.setText(null);
+    }
+
+    private void progressBarInvisibleSignupVisible(){
+        progressBar.setVisibility(View.GONE);
+        signup.setVisibility(View.VISIBLE);
+    }
+
+    private void progressBarVisibleSignupInvisible(){
+        progressBar.setVisibility(View.VISIBLE);
+        signup.setVisibility(View.GONE);
     }
 
     @Override
