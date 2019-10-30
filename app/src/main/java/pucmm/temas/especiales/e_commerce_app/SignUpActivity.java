@@ -24,8 +24,6 @@ import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
 
 public class SignUpActivity extends AppCompatActivity  {
-    //TODO: VERIFY WHAT IS IS PROVIDER PARAMETER.
-    //TODO: ADD A LOADING BAR WHEN ANY CREATE BUTTON IS PRESSED.
     private EditText name;
     private EditText user;
     private EditText email;
