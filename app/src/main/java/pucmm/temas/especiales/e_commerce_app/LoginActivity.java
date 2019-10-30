@@ -121,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(Exception error) {
+                        progressbarInvisibleLoginButtonVisible();
                         //send error message with Toast Class
                         Toast toast = Toast.makeText(getApplicationContext(),
                                 "Incorrect email or password",
@@ -133,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
                 loginTask.execute();
             }else{
+                progressbarInvisibleLoginButtonVisible();
                 Toast.makeText(this,"No Internet Connection", Toast.LENGTH_LONG).show();
             }
         }
