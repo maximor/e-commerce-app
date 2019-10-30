@@ -73,7 +73,7 @@ public class HttpConnection {
     public String post(String json) throws IOException{
         final BufferedReader reader;
         connection.getOutputStream().write(json.getBytes("utf-8"));
-        if(connection.getResponseCode() == HttpURLConnection.HTTP_OK){
+        if(connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == HttpURLConnection.HTTP_CREATED ){
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         }else{
             reader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "utf-8"));
