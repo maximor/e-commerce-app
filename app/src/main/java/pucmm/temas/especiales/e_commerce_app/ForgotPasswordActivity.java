@@ -86,7 +86,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(Exception error) {
-                        Log.i("Error: ", error.getMessage());
+                        MessageDialog.getInstance(applicationContext).
+                                errorDialog(email.getText().toString()+" "+ error.getMessage());
                         progressBarInvisibleSendVisible();
                     }
                 });
