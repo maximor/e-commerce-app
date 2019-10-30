@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,6 @@ import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
 
 public class SignUpActivity extends AppCompatActivity  {
     //TODO: VERIFY WHAT IS IS PROVIDER PARAMETER.
-    //TODO: SET FORMAT TO PHONE FIELD.
     //TODO: ADD A LOADING BAR WHEN ANY CREATE BUTTON IS PRESSED.
     //TODO: LAUNCH ALERT MESSAGE WHEN A USER IS CREATED SUCCESSFULLY.
     //TODO: LAUNCH ALERT MESSAGE WHEN THERE'S AN ERROR.
@@ -49,6 +49,8 @@ public class SignUpActivity extends AppCompatActivity  {
         this.password = (EditText) findViewById(R.id.txtPassword);
         this.confirmPassword = (EditText) findViewById(R.id.txtConfirmPassword);
         this.contact = (EditText) findViewById(R.id.txtContact);
+        //Setting format to contact field
+        this.contact.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
         this.forgotPassword = (TextView) findViewById(R.id.viewForgot);
         this.login = (TextView) findViewById(R.id.viewLogin);
         this.signup = (Button) findViewById(R.id.btnSignup);

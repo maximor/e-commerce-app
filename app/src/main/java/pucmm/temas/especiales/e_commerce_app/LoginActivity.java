@@ -23,7 +23,6 @@ import pucmm.temas.especiales.e_commerce_app.utils.Networking;
 import pucmm.temas.especiales.e_commerce_app.utils.UserSession;
 
 public class LoginActivity extends AppCompatActivity {
-    //TODO: LOADING BAR WHEN PRESS LOGIN BUTTON.
     private TextView message;
     private EditText user;
     private EditText password;
