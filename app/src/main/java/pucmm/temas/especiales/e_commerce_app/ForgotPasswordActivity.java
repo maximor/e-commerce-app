@@ -1,12 +1,10 @@
 package pucmm.temas.especiales.e_commerce_app;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,14 +29,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private EditText email;
     private ProgressBar progressBar;
     private Context applicationContext;
-    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
         applicationContext = this;
-        bundle = savedInstanceState;
+
         updateUI();
     }
 
@@ -66,12 +63,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void sendForgotEmail(){
-        progressBar.setVisibility(View.VISIBLE);
-        this.send.setVisibility(View.GONE);
+        progressBarVisibleSendInvisible();
         if(FieldValidator.isEmpty(this.email)){
             this.email.setError("This field can not be blank");
-            progressBar.setVisibility(View.GONE);
-            send.setVisibility(View.VISIBLE);
+            progressBarInvisibleSendVisible();
         }else if(FieldValidator.isEmailValid(this.email, this.email.getText().toString())){
             //verify if the internet is available before request the forgotpassword
             if(Networking.getConnectionStatus(this)){
@@ -79,6 +74,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         new Response.Listener() {
                             @Override
                             public void onResponse(Object response) {
+                                progressBarInvisibleSendVisible();
                                 Gson gson = new Gson();
                                 ErrorMessage result = gson.fromJson(response.toString(), ErrorMessage.class);
 
@@ -86,27 +82,32 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 MessageDialog.getInstance(applicationContext).
                                         informationDialog(result.getMessage());
 
-                                progressBar.setVisibility(View.GONE);
-                                send.setVisibility(View.VISIBLE);
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(Exception error) {
                         Log.i("Error: ", error.getMessage());
-                        progressBar.setVisibility(View.GONE);
-                        send.setVisibility(View.VISIBLE);
+                        progressBarInvisibleSendVisible();
                     }
                 });
                 forgotTask.execute();
             }else{
                 Toast.makeText(this,"No Internet Connection", Toast.LENGTH_LONG).show();
-                progressBar.setVisibility(View.GONE);
-                send.setVisibility(View.VISIBLE);
+                progressBarInvisibleSendVisible();
             }
         }else{
-            progressBar.setVisibility(View.GONE);
-            send.setVisibility(View.VISIBLE);
+            progressBarInvisibleSendVisible();
         }
+    }
+
+    private void progressBarInvisibleSendVisible() {
+        progressBar.setVisibility(View.GONE);
+        send.setVisibility(View.VISIBLE);
+    }
+
+    private void progressBarVisibleSendInvisible() {
+        progressBar.setVisibility(View.VISIBLE);
+        this.send.setVisibility(View.GONE);
     }
 
     private void goBack(){
