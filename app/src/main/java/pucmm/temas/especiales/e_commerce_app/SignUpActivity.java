@@ -2,19 +2,23 @@ package pucmm.temas.especiales.e_commerce_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
 import pucmm.temas.especiales.e_commerce_app.asynctasks.Response;
 import pucmm.temas.especiales.e_commerce_app.asynctasks.SignupTask;
+import pucmm.temas.especiales.e_commerce_app.dialog.MessageDialog;
 import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
 
@@ -30,10 +34,10 @@ public class SignUpActivity extends AppCompatActivity  {
     private EditText password;
     private EditText confirmPassword;
     private EditText contact;
-    private EditText dateBirth;
     private TextView forgotPassword;
     private TextView login;
     private Button signup;
+    private Context applicationContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity  {
     }
 
     private void updateUI() {
+        this.applicationContext = this;
         this.name = (EditText) findViewById(R.id.txtName);
         this.user = (EditText) findViewById(R.id.txtUser);
         this.email = (EditText) findViewById(R.id.txtEmail);
@@ -126,18 +131,18 @@ public class SignUpActivity extends AppCompatActivity  {
                         this.password.getText().toString(),
                         this.contact.getText().toString(),
                         "",false);
-                cleanTextFields();
                 SignupTask signupTask = new SignupTask(user, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.i("JSON: ", response.toString());
-                        //TODO: SEND A MESSAGE OF A SUCCESS USER CREATION
+                        cleanTextFields();
+                        Toast toast = Toast.makeText(applicationContext,"User was created Successfuly", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.TOP,0,0);
+                        toast.show();
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(Exception error) {
-                        Log.i("Error: ", error.getMessage());
-                        //TODO: SEND A MESSAGE OF AN ERROR IF SOMETHING HAPPEN ON THE CREATION
+                        MessageDialog.getInstance(applicationContext).errorDialog("["+email.getText().toString()+"] "+ error.getMessage());
                     }
                 });
                 signupTask.execute();
