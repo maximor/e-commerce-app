@@ -24,4 +24,10 @@ public class MessageDialog {
         builder.setTitle("Information Message").setMessage(message);
         builder.create().show();
     }
+
+    public void errorDialog(String message){
+        builder.setIcon(R.drawable.ic_error);
+        builder.setTitle("Error Message").setMessage(message);
+        builder.create().show();
+    }
 }
