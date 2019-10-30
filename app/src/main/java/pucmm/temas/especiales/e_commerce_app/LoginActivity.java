@@ -2,9 +2,9 @@ package pucmm.temas.especiales.e_commerce_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import pucmm.temas.especiales.e_commerce_app.asynctasks.LoginTask;
 import pucmm.temas.especiales.e_commerce_app.asynctasks.Response;
+import pucmm.temas.especiales.e_commerce_app.dialog.MessageDialog;
 import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
 import pucmm.temas.especiales.e_commerce_app.utils.Networking;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button login;
     private TextView signup;
     private TextView forgotPassword;
+    private Context applicationContext;
 
     private UserSession session;
 
@@ -42,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUI() {
+        this.applicationContext = this;
         this.user = (EditText) findViewById(R.id.txtUser);
         this.password = (EditText) findViewById(R.id.txtPassword);
         this.login = (Button) findViewById(R.id.btnLogin);
@@ -123,11 +126,8 @@ public class LoginActivity extends AppCompatActivity {
                     public void onErrorResponse(Exception error) {
                         progressbarInvisibleLoginButtonVisible();
                         //send error message with Toast Class
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                "Incorrect email or password",
-                                Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.CENTER|Gravity.LEFT,0,0);
-                        toast.show();
+                        MessageDialog.getInstance(applicationContext).
+                                errorDialog("Resource " + error.getMessage() + ", email or password Incorrect" );
                         user.setError("Verify email ["+user.getText().toString()+"], may be incorrect");
                         password.setError("Verify password, may be incorrect");
                     }
