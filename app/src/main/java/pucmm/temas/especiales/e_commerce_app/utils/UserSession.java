@@ -26,13 +26,14 @@ public class UserSession {
     }
 
 //    create login session
-    public void createLoginSession(long id, String email, String user, String name, long token){
+    public void createLoginSession(long id, String email, String user, String name, long token, boolean isProvider){
         editor.putBoolean("isLoggedIn", true);
         editor.putLong("id", id);
         editor.putString("email", email);
         editor.putString("user", user);
         editor.putString("name", name);
         editor.putLong("token", token);
+        editor.putBoolean("isProvider", isProvider);
         editor.commit();
     }
 
@@ -77,6 +78,7 @@ public class UserSession {
         user.setUser(sharedPreferences.getString("user", null));
         user.setName(sharedPreferences.getString("name", null));
         user.setToken(sharedPreferences.getLong("token", -1));
+        user.setProvider(sharedPreferences.getBoolean("isProvider", false));
         return user;
     }
 }
