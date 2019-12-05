@@ -61,20 +61,20 @@ public final class FragmentNavigationManager {
 
 
     public void showProductFragmentManager(Product product, User user) {
-//        showFragment(ProductFragmentManager.newInstance(product, user), false);
+        showFragment(ProductFragmentManager.newInstance(product, user), false);
     }
 
     public void showProductDetailsFragment(User user, Product product) {
-//        showFragment(ProductDetailsFragment.newInstance(user, product), false);
+        showFragment(ProductDetailsFragment.newInstance(user, product), false);
     }
 
-//    public void showCartFragment(User user) {
-//        showFragment(CartFragment.newInstance(user), false);
-//    }
+    public void showCartFragment(User user) {
+        showFragment(CartFragment.newInstance(user), false);
+    }
 
 
     public void showProfileFragment(User user) {
-//        showFragment(ProfileFragment.newInstance(user), false);
+        showFragment(ProfileFragment.newInstance(user), false);
     }
 
     private void showFragment(Fragment fragment, boolean allowStateLoss) {

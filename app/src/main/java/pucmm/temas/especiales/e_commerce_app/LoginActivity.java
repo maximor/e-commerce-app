@@ -98,7 +98,9 @@ public class LoginActivity extends AppCompatActivity {
                                     userInformation.getUser(),
                                     userInformation.getName(),
                                     userInformation.getToken(),
-                                    userInformation.isIsProvider());
+                                    userInformation.isIsProvider(),
+                                    userInformation.getPhoto(),
+                                    userInformation.getContact());
 
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             finish();
