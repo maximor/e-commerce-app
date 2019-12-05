@@ -55,6 +55,8 @@
     <string name="back">Back</string>
     <string name="prompt_item_name">Enter Item Name</string>
     <string name="prompt_price">Enter Price</string>
+    <string name="prompt_contact">Enter Contact</string>
+    <string name="prompt_is_provider">Is Provider?</string>
 
 </resources>
 

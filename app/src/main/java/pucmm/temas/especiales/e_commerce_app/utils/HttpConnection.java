@@ -84,7 +84,7 @@ public class HttpConnection {
 
         this.headers = new HashMap<>();
         this.headers.put("Content-Type", "application/json");
-        this.headers.put("TOKEN", "BxujRbXGyYragmmbqytmshFKE6IEqHUNBAyrM60q");
+        this.headers.put("TOKEN", "bSLKWUH_YIlnpVALrY14dEMavpx0n-XXVfT5Yq2g");
 
         if (headers != null) {
             this.headers.putAll(headers);
