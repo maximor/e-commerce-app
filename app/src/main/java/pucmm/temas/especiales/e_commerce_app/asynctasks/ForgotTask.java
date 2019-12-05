@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import pucmm.temas.especiales.e_commerce_app.utils.HttpConnection;
+import pucmm.temas.especiales.e_commerce_app.utils.RequestMethod;
+import pucmm.temas.especiales.e_commerce_app.utils.SystemProperties;
 
 public class ForgotTask extends AsyncTask<Void, Void, Result> {
 

@@ -21,7 +21,10 @@ import pucmm.temas.especiales.e_commerce_app.asynctasks.Response;
 import pucmm.temas.especiales.e_commerce_app.asynctasks.SignupTask;
 import pucmm.temas.especiales.e_commerce_app.dialog.MessageDialog;
 import pucmm.temas.especiales.e_commerce_app.entities.User;
+import pucmm.temas.especiales.e_commerce_app.utils.Constant;
 import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
+import pucmm.temas.especiales.e_commerce_app.utils.RequestMethod;
+import pucmm.temas.especiales.e_commerce_app.utils.SystemProperties;
 
 public class SignUpActivity extends AppCompatActivity  {
     private EditText name;
@@ -60,27 +63,12 @@ public class SignUpActivity extends AppCompatActivity  {
 
 
         //Access event for Forgot password
-        this.forgotPassword.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                showForgotPassword();
-            }
-        });
+        this.forgotPassword.setOnClickListener(view -> showForgotPassword());
 
-        this.login.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                showLogin();
-            }
-        });
+        this.login.setOnClickListener(view -> showLogin());
 
         //When the signup button is clicked
-        this.signup.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                registrate();
-            }
-        });
+        this.signup.setOnClickListener(view -> registrate());
     }
 
 
@@ -138,21 +126,15 @@ public class SignUpActivity extends AppCompatActivity  {
                         this.password.getText().toString(),
                         this.contact.getText().toString(),
                         "",false);
-                SignupTask signupTask = new SignupTask(user, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        progressBarInvisibleSignupVisible();
-                        cleanTextFields();
-                        Toast toast = Toast.makeText(applicationContext,"User was created Successfuly", Toast.LENGTH_LONG);
-                        toast.setGravity(Gravity.TOP,0,0);
-                        toast.show();
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(Exception error) {
-                        MessageDialog.getInstance(applicationContext).errorDialog("["+email.getText().toString()+"] "+ error.getMessage());
-                        progressBarInvisibleSignupVisible();
-                    }
+                SignupTask signupTask = new SignupTask(user, (Response.Listener<JSONObject>) response -> {
+                    progressBarInvisibleSignupVisible();
+                    cleanTextFields();
+                    Toast toast = Toast.makeText(applicationContext,"User was created Successfuly", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.TOP,0,0);
+                    toast.show();
+                }, error -> {
+                    MessageDialog.getInstance(applicationContext).errorDialog("["+email.getText().toString()+"] "+ error.getMessage());
+                    progressBarInvisibleSignupVisible();
                 });
                 signupTask.execute();
             }

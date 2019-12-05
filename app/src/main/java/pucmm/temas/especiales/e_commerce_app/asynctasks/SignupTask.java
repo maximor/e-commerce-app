@@ -6,7 +6,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +13,8 @@ import java.io.IOException;
 
 import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.HttpConnection;
+import pucmm.temas.especiales.e_commerce_app.utils.RequestMethod;
+import pucmm.temas.especiales.e_commerce_app.utils.SystemProperties;
 
 public class SignupTask extends AsyncTask<Void, Void, Result> {
     private static final String LOGIN_URL = "http://ec2-3-86-40-181.compute-1.amazonaws.com:6789/register";
