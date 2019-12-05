@@ -1,9 +1,30 @@
 package pucmm.temas.especiales.e_commerce_app.utils;
 
+import android.content.Context;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
+
+import pucmm.temas.especiales.e_commerce_app.R;
 
 public class FieldValidator {
     public FieldValidator() { }
+
+    public static boolean isEmpty(final Context context, final View... views) {
+        for (View view : views) {
+            if (view instanceof EditText) {
+                final EditText editText = (EditText) view;
+                // Reset errors.
+                editText.setError(null);
+                if (TextUtils.isEmpty(editText.getText())) {
+                    editText.setError(context.getString(R.string.error_field_required));
+                    editText.requestFocus();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public static boolean isEmpty(EditText editText){
         String input = editText.getText().toString().trim();

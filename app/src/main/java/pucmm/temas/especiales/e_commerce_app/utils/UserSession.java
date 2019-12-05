@@ -89,12 +89,12 @@ public class UserSession {
 
     public User getUserInformation(){
         User user = new User();
-        user.setId(sharedPreferences.getLong("id", -1));
+        user.setId((int) sharedPreferences.getLong("id", -1));
         user.setEmail(sharedPreferences.getString("email", null));
         user.setUser(sharedPreferences.getString("user", null));
         user.setName(sharedPreferences.getString("name", null));
-        user.setToken(sharedPreferences.getLong("token", -1));
-        user.setProvider(sharedPreferences.getBoolean("isProvider", false));
+        user.setToken((int) sharedPreferences.getLong("token", -1));
+        user.setIsProvider(sharedPreferences.getBoolean("isProvider", false));
         return user;
     }
 
