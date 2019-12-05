@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
                 android:gravity="center_horizontal"
-                android:text="Logo o Nombre de app"
+                android:text="@string/app_name"
                 android:textSize="30sp" />
 
             <com.google.android.material.textfield.TextInputLayout
