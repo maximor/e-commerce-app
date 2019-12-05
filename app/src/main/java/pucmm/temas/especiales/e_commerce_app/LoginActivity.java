@@ -22,7 +22,6 @@ import pucmm.temas.especiales.e_commerce_app.utils.Networking;
 import pucmm.temas.especiales.e_commerce_app.utils.UserSession;
 
 public class LoginActivity extends AppCompatActivity {
-    private TextView message;
     private EditText user;
     private EditText password;
     private Button login;
