@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.google.android.material.navigation.NavigationView;
 
 import pucmm.temas.especiales.e_commerce_app.entities.User;
+import pucmm.temas.especiales.e_commerce_app.fragments.FragmentNavigationManager;
 import pucmm.temas.especiales.e_commerce_app.utils.UserSession;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -26,6 +27,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private UserSession session;
     private User user;
 
+    private static final String IMAGE_CACHE_DIR = "images";
+    private static final String THUMBNAIL_CACHE_DIR = "thumbs";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +39,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void updateUI() {
+        FragmentNavigationManager.newInstance(this);
         this.mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         this.mToggle = new ActionBarDrawerToggle(this, this.mDrawerLayout, R.string.open, R.string.close);
 
         navigationView = (NavigationView) findViewById(R.id.nav_viewe);
-        getSupportFragmentManager().
-                beginTransaction().
-                replace(R.id.fragment_container, new HomeFragment()).commit();
+//        getSupportFragmentManager().
+//                beginTransaction().
+//                replace(R.id.fragment_container, new HomeFragment()).commit();
         navigationView.setCheckedItem(R.id.menu_home);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -71,29 +76,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()){
             case R.id.menu_home:
-                getSupportFragmentManager().
-                        beginTransaction().
-                        replace(R.id.fragment_container, new HomeFragment()).commit();
+//                getSupportFragmentManager().
+//                        beginTransaction().
+//                        replace(R.id.fragment_container, new HomeFragment())
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
             case R.id.menu_products:
-                getSupportFragmentManager().
-                        beginTransaction().
-                        replace(R.id.fragment_container, new ProductFragment()).commit();
+//                getSupportFragmentManager().
+//                        beginTransaction().
+//                        replace(R.id.fragment_container, new ProductFragment()).commit();
+                FragmentNavigationManager.obtain().showProductFragmentList(user, null);
                 break;
             case R.id.menu_category:
-                getSupportFragmentManager().
-                        beginTransaction().
-                        replace(R.id.fragment_container, new CategoryFragment()).commit();
+                FragmentNavigationManager.obtain().showCategoryFragmentList(user);
+//                getSupportFragmentManager().
+//                        beginTransaction().
+//                        replace(R.id.fragment_container, new CategoryFragment()).commit();
                 break;
             case R.id.menu_tracking:
-                getSupportFragmentManager().
-                        beginTransaction().
-                        replace(R.id.fragment_container, new TrackingFragment()).commit();
+//                getSupportFragmentManager().
+//                        beginTransaction().
+//                        replace(R.id.fragment_container, new TrackingFragment()).commit();
                 break;
             case R.id.menu_profile:
-                getSupportFragmentManager().
-                        beginTransaction().
-                        replace(R.id.fragment_container, new ProfileFragment()).commit();
+//                getSupportFragmentManager().
+//                        beginTransaction().
+//                        replace(R.id.fragment_container, new ProfileFragment())
+//                        .addToBackStack(null)
+//                        .commit();
                 break;
             case R.id.menu_signout:
                 session.logoutUser();
