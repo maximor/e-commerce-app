@@ -1,11 +1,10 @@
 package pucmm.temas.especiales.e_commerce_app.asynctasks;
 
-import android.annotation.TargetApi;
 import android.os.AsyncTask;
-import android.os.Build;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,7 +13,6 @@ import java.io.IOException;
 import pucmm.temas.especiales.e_commerce_app.entities.Login;
 import pucmm.temas.especiales.e_commerce_app.utils.HttpConnection;
 
-@TargetApi(Build.VERSION_CODES.CUPCAKE)
 public class LoginTask extends AsyncTask<Void, Void, Result> {
 
     private static final String LOGIN_URL = "http://ec2-3-86-40-181.compute-1.amazonaws.com:6789/login";

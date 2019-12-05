@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import pucmm.temas.especiales.e_commerce_app.asynctasks.LoginTask;
-import pucmm.temas.especiales.e_commerce_app.asynctasks.Response;
 import pucmm.temas.especiales.e_commerce_app.dialog.MessageDialog;
 import pucmm.temas.especiales.e_commerce_app.entities.User;
 import pucmm.temas.especiales.e_commerce_app.utils.FieldValidator;
@@ -54,28 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         session = new UserSession(getApplicationContext());
 
         //access event for login authentication
-        this.login.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                auth();
-            }
-        });
+        this.login.setOnClickListener(view -> auth());
 
         //Access event for signup
-        this.signup.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                showSignup();
-            }
-        });
+        this.signup.setOnClickListener(view -> showSignup());
 
         //Access event for Forgot password
-        this.forgotPassword.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                showForgotPassword();
-            }
-        });
+        this.forgotPassword.setOnClickListener(view -> showForgotPassword());
     }
 
     private void auth(){
@@ -104,34 +88,28 @@ public class LoginActivity extends AppCompatActivity {
             if(Networking.getConnectionStatus(this)){
                 LoginTask loginTask = new LoginTask(this.user.getText().toString(),
                         this.password.getText().toString(),
-                        new Response.Listener() {
-                            @Override
-                            public void onResponse(Object response) {
-                                Gson gson = new Gson();
-                                User userInformation = gson.fromJson(response.toString(), User.class);
+                        response -> {
+                            Gson gson = new Gson();
+                            User userInformation = gson.fromJson(response.toString(), User.class);
 
-                                //store data in the shred preference to have a session
-                                session.createLoginSession(userInformation.getId(),
-                                        userInformation.getEmail(),
-                                        userInformation.getUser(),
-                                        userInformation.getName(),
-                                        userInformation.getToken(),
-                                        userInformation.isProvider());
+                            //store data in the shred preference to have a session
+                            session.createLoginSession(userInformation.getId(),
+                                    userInformation.getEmail(),
+                                    userInformation.getUser(),
+                                    userInformation.getName(),
+                                    userInformation.getToken(),
+                                    userInformation.isIsProvider());
 
-                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                finish();
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(Exception error) {
-                        progressbarInvisibleLoginButtonVisible();
-                        //send error message with Toast Class
-                        MessageDialog.getInstance(applicationContext).
-                                errorDialog("Resource " + error.getMessage() + ", email or password Incorrect" );
-                        user.setError("Verify email ["+user.getText().toString()+"], may be incorrect");
-                        password.setError("Verify password, may be incorrect");
-                    }
-                });
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        }, error -> {
+                            progressbarInvisibleLoginButtonVisible();
+                            //send error message with Toast Class
+                            MessageDialog.getInstance(applicationContext).
+                                    errorDialog("Resource " + error.getMessage() + ", email or password Incorrect" );
+                            user.setError("Verify email ["+user.getText().toString()+"], may be incorrect");
+                            password.setError("Verify password, may be incorrect");
+                        });
                 loginTask.execute();
             }else{
                 progressbarInvisibleLoginButtonVisible();
